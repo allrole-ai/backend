@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/allrole-ai/backend-/routes"
+	"github.com/allrole-ai/backend-ai/routes"
 	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 )
