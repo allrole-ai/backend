@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"net/url"
-	"os"
-	"strings"
+
+	// "net/url"
+	// "os"
+	// "strings"
 	"time"
 
+	"github.com/allrole-ai/backend-ai/config"
+	"github.com/allrole-ai/backend-ai/helper"
+	"github.com/allrole-ai/backend-ai/model"
 	"github.com/go-resty/resty/v2"
-	"github.com/allrole-ai/backend-/helper"
-	"github.com/allrole-ai/backend/model"
-	"github.com/allrole-ai/backend/config"
 )
 
 func Chat(respw http.ResponseWriter, req *http.Request, tokenmodel string) {
@@ -24,7 +25,7 @@ func Chat(respw http.ResponseWriter, req *http.Request, tokenmodel string) {
 		return
 	}
 
-	if chat.Prompt == "" {
+	if chat.Query == "" {
 		helper.ErrorResponse(respw, req, http.StatusBadRequest, "Bad Request", "mohon untuk melengkapi data")
 		return
 	}
@@ -32,7 +33,7 @@ func Chat(respw http.ResponseWriter, req *http.Request, tokenmodel string) {
 	client := resty.New()
 
 	// Hugging Face API URL dan token
-	apiUrl := modules.GetEnv("HUGGINGFACE_API_URL")
+	apiUrl := config.GetEnv("HUGGINGFACE_API_URL")
 	apiToken := "Bearer " + tokenmodel
 
 	var response *resty.Response
@@ -45,7 +46,7 @@ func Chat(respw http.ResponseWriter, req *http.Request, tokenmodel string) {
 		response, err = client.R().
 			SetHeader("Authorization", apiToken).
 			SetHeader("Content-Type", "application/json").
-			SetBody(`{"inputs": "` + chat.Prompt + `"}`).
+			SetBody(`{"inputs": "` + chat.Query + `"}`).
 			Post(apiUrl)
 
 		if err != nil {
