@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/allrole-ai/backend/helper"
+	"github.com/allrole-ai/backend-/helper"
 	"github.com/allrole-ai/backend/model"
-
+	"github.com/allrole-ai/backend/config"
 )
 
 func Chat(respw http.ResponseWriter, req *http.Request, tokenmodel string) {
